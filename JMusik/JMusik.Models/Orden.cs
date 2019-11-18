@@ -1,9 +1,10 @@
-﻿using System;
+﻿using JMusik.Models.Enum;
+using System;
 using System.Collections.Generic;
 
-namespace JMusik.Data
+namespace JMusik.Models
 {
-    public partial class Orden
+    public  class Orden
     {
         public Orden()
         {
@@ -16,7 +17,7 @@ namespace JMusik.Data
         public DateTime FechaRegistro { get; set; }
         public DateTime? FechaActualizacion { get; set; }
         public int UsuarioId { get; set; }
-        public int EstatusOrden { get; set; }
+        public EstatusOrden EstatusOrden { get; set; }
 
         public virtual Usuario Usuario { get; set; }
         public virtual ICollection<DetalleOrden> DetalleOrden { get; set; }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace JMusik.Data
+namespace JMusik.Models
 {
-    public partial class DetalleOrden
+    public  class DetalleOrden
     {
         public int Id { get; set; }
         public int OrdenId { get; set; }

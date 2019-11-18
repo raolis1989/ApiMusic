@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace JMusik.Data
+namespace JMusik.Models
 {
-    public partial class Perfil
+    public  class Perfil
     {
         public Perfil()
         {
