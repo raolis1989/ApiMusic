@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using JMusik.Data;
 using Microsoft.EntityFrameworkCore;
+using JMusik.Data.Contratos;
+using JMusik.Data.Repository;
 
 namespace JMusik.WebApi
 {
@@ -30,7 +32,7 @@ namespace JMusik.WebApi
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<TiendaDbContext>(option => option.UseSqlServer(_configuration.GetConnectionString("TiendaDb")));
-         
+            services.AddScoped<IProductosRepository, ProductosRepository>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
