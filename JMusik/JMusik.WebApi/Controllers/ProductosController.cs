@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using JMusik.Data;
 using JMusik.Models;
+using JMusik.Data.Contratos;
 
 namespace JMusik.WebApi.Controllers
 {
@@ -14,95 +15,111 @@ namespace JMusik.WebApi.Controllers
     [ApiController]
     public class ProductosController : ControllerBase
     {
-        private readonly TiendaDbContext _context;
+   
+        private readonly IProductosRepository _productosRepository;
 
-        public ProductosController(TiendaDbContext context)
+        public ProductosController(IProductosRepository productosRepository)
         {
-            _context = context;
+            
+            _productosRepository = productosRepository;
         }
 
-        // GET: api/Productos
+        //// GET: api/Productos
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<Producto>>> GetProductos()
         {
-
-            var sd = await _context.Productos.ToListAsync();
-            return sd;
-        }
-
-        // GET: api/Productos/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Producto>> GetProducto(int id)
-        {
-            var producto = await _context.Productos.FindAsync(id);
-
-            if (producto == null)
-            {
-                return NotFound();
-            }
-
-            return producto;
-        }
-
-        // PUT: api/Productos/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProducto(int id, Producto producto)
-        {
-            if (id != producto.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(producto).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                return await _productosRepository.ObtenerProductosAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!ProductoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+
+                return BadRequest();
             }
-
-            return NoContent();
         }
 
-        // POST: api/Productos
-        [HttpPost]
-        public async Task<ActionResult<Producto>> PostProducto(Producto producto)
+        //// GET: api/Productos/5
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Producto>> GetProducto(int id)
         {
-            _context.Productos.Add(producto);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProducto", new { id = producto.Id }, producto);
-        }
-
-        // DELETE: api/Productos/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Producto>> DeleteProducto(int id)
-        {
-            var producto = await _context.Productos.FindAsync(id);
-            if (producto == null)
+            var prod= await _productosRepository.ObtenerProductoAsync(id);
+             if(prod==null)
             {
                 return NotFound();
             }
 
-            _context.Productos.Remove(producto);
-            await _context.SaveChangesAsync();
+            return prod;
+
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<Producto>> PostProducto(Producto producto)
+        {
+            try
+            {
+                var nuevoProducto = await _productosRepository.Agregar(producto);
+
+
+                if(nuevoProducto==null)
+                {
+                    return BadRequest();
+                }
+                return CreatedAtAction(nameof(PostProducto), new { id = nuevoProducto.Id }, producto);
+
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest();
+            }
+        }
+
+
+        //// PUT: api/Productos/5
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<Producto>> PutProducto(int id, [FromBody]Producto producto)
+        {
+            if (producto== null)   
+                return NotFound();
+
+            var resultado = await _productosRepository.Actualizar(producto);
+            if (!resultado)
+                return BadRequest();
 
             return producto;
         }
+       
 
-        private bool ProductoExists(int id)
-        {
-            return _context.Productos.Any(e => e.Id == id);
-        }
+        //// DELETE: api/Productos/5
+        //[HttpDelete("{id}")]
+        //public async Task<ActionResult<Producto>> DeleteProducto(int id)
+        //{
+        //    var producto = await _context.Productos.FindAsync(id);
+        //    if (producto == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    _context.Productos.Remove(producto);
+        //    await _context.SaveChangesAsync();
+
+        //    return producto;
+        //}
+
+        //private bool ProductoExists(int id)
+        //{
+        //    return _context.Productos.Any(e => e.Id == id);
+        //}
     }
 }
