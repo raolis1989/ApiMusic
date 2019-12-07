@@ -12,6 +12,7 @@ using JMusik.Data;
 using Microsoft.EntityFrameworkCore;
 using JMusik.Data.Contratos;
 using JMusik.Data.Repository;
+using AutoMapper;
 
 namespace JMusik.WebApi
 {
@@ -30,6 +31,7 @@ namespace JMusik.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(Startup));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<TiendaDbContext>(option => option.UseSqlServer(_configuration.GetConnectionString("TiendaDb")));
             services.AddScoped<IProductosRepository, ProductosRepository>(); 

@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMusik.Models", "JMusik.Models\JMusik.Models.csproj", "{4FE8A181-C085-4EE9-80BD-BC30EFBF2DC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JMusik.Models", "JMusik.Models\JMusik.Models.csproj", "{4FE8A181-C085-4EE9-80BD-BC30EFBF2DC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMusik.Data", "JMusik.Data\JMusik.Data.csproj", "{047BC214-82F5-4478-8516-76729D2FAF69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JMusik.Data", "JMusik.Data\JMusik.Data.csproj", "{047BC214-82F5-4478-8516-76729D2FAF69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMusik.WebApi", "JMusik.WebApi\JMusik.WebApi.csproj", "{7725D489-6970-4694-81CD-C88ED308A9FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JMusik.WebApi", "JMusik.WebApi\JMusik.WebApi.csproj", "{7725D489-6970-4694-81CD-C88ED308A9FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMusik.Dtos", "JMusik.Dtos\JMusik.Dtos.csproj", "{2D5F9869-DB6A-4715-BBFE-295549806465}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{7725D489-6970-4694-81CD-C88ED308A9FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7725D489-6970-4694-81CD-C88ED308A9FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7725D489-6970-4694-81CD-C88ED308A9FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D5F9869-DB6A-4715-BBFE-295549806465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D5F9869-DB6A-4715-BBFE-295549806465}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D5F9869-DB6A-4715-BBFE-295549806465}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D5F9869-DB6A-4715-BBFE-295549806465}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

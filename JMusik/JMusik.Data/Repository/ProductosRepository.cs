@@ -37,6 +37,9 @@ namespace JMusik.Data.Repository
 
             public async Task<Producto> Agregar(Producto producto)
             {
+                producto.Estatus = EstatusProducto.Activo;
+            producto.FechaRegistro = DateTime.UtcNow;
+
                 _contexto.Productos.Add(producto);
                 try
                 {
@@ -44,7 +47,7 @@ namespace JMusik.Data.Repository
                 }
                 catch (Exception excepcion)
                 {
-                    ;
+                return null;
                 }
 
                 return producto;
@@ -76,12 +79,13 @@ namespace JMusik.Data.Repository
             public async Task<Producto> ObtenerProductoAsync(int id)
             {
                 return await _contexto.Productos
-                                   .SingleOrDefaultAsync(c => c.Id == id);
+                                   .SingleOrDefaultAsync(c => c.Id == id && c.Estatus== EstatusProducto.Activo);
             }
 
             public async Task<List<Producto>> ObtenerProductosAsync()
             {
                 return await _contexto.Productos.OrderBy(u => u.Nombre)
+                                                .Where(u=>u.Estatus==EstatusProducto.Activo)
                                                 .ToListAsync();
             }
 
