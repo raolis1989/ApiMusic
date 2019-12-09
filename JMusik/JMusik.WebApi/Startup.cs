@@ -13,6 +13,9 @@ using Microsoft.EntityFrameworkCore;
 using JMusik.Data.Contratos;
 using JMusik.Data.Repository;
 using AutoMapper;
+using Serilog.Core;
+using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace JMusik.WebApi
 {
@@ -22,6 +25,7 @@ namespace JMusik.WebApi
 
         public Startup(IConfiguration configuration)
         {
+            Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration).CreateLogger();
             _configuration = configuration;
         }
 
@@ -38,8 +42,11 @@ namespace JMusik.WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+
+            loggerFactory.AddSerilog();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -2,6 +2,7 @@
 using JMusik.Models;
 using JMusik.Models.Enum;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,23 +16,30 @@ namespace JMusik.Data.Repository
 
         
             private TiendaDbContext _contexto;
+        private readonly ILogger<ProductosRepository> _logger;
 
-            public ProductosRepository(TiendaDbContext contexto)
+        public ProductosRepository(TiendaDbContext contexto, ILogger<ProductosRepository> logger)
             {
                 _contexto = contexto;
-            }
+                _logger = logger;
+        }
             public async Task<bool> Actualizar(Producto producto)
             {
-                _contexto.Productos.Attach(producto);
-                _contexto.Entry(producto).State = EntityState.Modified;
+
+                    var productoBd = await ObtenerProductoAsync(producto.Id);
+                        productoBd.Nombre = producto.Nombre;
+                        productoBd.Precio = producto.Precio;
+
+                //_contexto.Productos.Attach(producto);
+                //_contexto.Entry(producto).State = EntityState.Modified;
                 try
                 {
                     return await _contexto.SaveChangesAsync() > 0 ? true : false;
                 }
                 catch (Exception excepcion)
                 {
-                    ;
-                }
+                _logger.LogError($"Error en {nameof(Actualizar)}: {excepcion.Message}");
+            }
                 return false;
             }
 
@@ -47,6 +55,7 @@ namespace JMusik.Data.Repository
                 }
                 catch (Exception excepcion)
                 {
+                _logger.LogError($"Error en {nameof(Agregar)}: {excepcion.Message}");
                 return null;
                 }
 
@@ -70,8 +79,8 @@ namespace JMusik.Data.Repository
                 }
                 catch (Exception excepcion)
                 {
-                    ;
-                }
+                _logger.LogError($"Error en {nameof(Eliminar)}: {excepcion.Message}");
+            }
                 return false;
 
             }

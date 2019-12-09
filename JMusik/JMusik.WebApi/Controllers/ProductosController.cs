@@ -4,6 +4,7 @@ using JMusik.Dtos;
 using JMusik.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,12 +18,16 @@ namespace JMusik.WebApi.Controllers
    
         private readonly IProductosRepository _productosRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<ProductosController> _logger;
 
-        public ProductosController(IProductosRepository productosRepository, IMapper mapper)
+        public ProductosController(IProductosRepository productosRepository, 
+            IMapper mapper,
+            ILogger<ProductosController> logger)
         {
             
             _productosRepository = productosRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         //// GET: api/Productos
@@ -39,7 +44,7 @@ namespace JMusik.WebApi.Controllers
             }
             catch (Exception ex)
             {
-
+                _logger.LogError($"Error al Obtener los productos: ${ex.Message}");
                 return BadRequest();
             }
         }
@@ -84,7 +89,7 @@ namespace JMusik.WebApi.Controllers
             }
             catch (Exception ex)
             {
-
+                _logger.LogError($"Error al crear los productos: ${ex.Message}");
                 return BadRequest();
             }
         }
@@ -95,16 +100,19 @@ namespace JMusik.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Producto>> Put(int id, [FromBody]Producto producto)
+        public async Task<ActionResult<ProductoDto>> Put(int id, [FromBody]ProductoDto productoDto)
         {
-            if (producto== null)   
+
+
+            if (productoDto == null)   
                 return NotFound();
+            var producto = _mapper.Map<Producto>(productoDto);
 
             var resultado = await _productosRepository.Actualizar(producto);
             if (!resultado)
                 return BadRequest();
 
-            return producto;
+            return productoDto;
         }
        
 
@@ -126,6 +134,7 @@ namespace JMusik.WebApi.Controllers
             }
             catch(Exception excepcion)
             {
+                _logger.LogError($"Error al eliminar producto: ${excepcion.Message}");
                 return BadRequest();
             }
         }
