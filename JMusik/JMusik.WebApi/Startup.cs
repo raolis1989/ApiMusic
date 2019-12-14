@@ -16,6 +16,7 @@ using AutoMapper;
 using Serilog.Core;
 using Serilog;
 using Microsoft.Extensions.Logging;
+using JMusik.Models;
 
 namespace JMusik.WebApi
 {
@@ -38,7 +39,8 @@ namespace JMusik.WebApi
             services.AddAutoMapper(typeof(Startup));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<TiendaDbContext>(option => option.UseSqlServer(_configuration.GetConnectionString("TiendaDb")));
-            services.AddScoped<IProductosRepository, ProductosRepository>(); 
+            services.AddScoped<IProductosRepository, ProductosRepository>();
+            services.AddScoped<IGenericoRepository<Perfil>, PerfilesRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

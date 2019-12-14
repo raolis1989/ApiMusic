@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace JMusik.WebApi.Profiles
 {
-    public class ProductoProfile : Profile
+    public class JMusikProfile : Profile
     {
-        public ProductoProfile()
+        public JMusikProfile()
         {
             this.CreateMap<Producto, ProductoDto>().ReverseMap();
+            this.CreateMap<Perfil, PerfilDto>().ReverseMap();
         }
     }
 }
