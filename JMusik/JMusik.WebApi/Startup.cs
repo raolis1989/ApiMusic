@@ -41,6 +41,7 @@ namespace JMusik.WebApi
             services.AddDbContext<TiendaDbContext>(option => option.UseSqlServer(_configuration.GetConnectionString("TiendaDb")));
             services.AddScoped<IProductosRepository, ProductosRepository>();
             services.AddScoped<IGenericoRepository<Perfil>, PerfilesRepository>();
+            services.AddScoped<IOrdersRepository, OrdersRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
