@@ -17,6 +17,7 @@ using Serilog.Core;
 using Serilog;
 using Microsoft.Extensions.Logging;
 using JMusik.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace JMusik.WebApi
 {
@@ -42,7 +43,8 @@ namespace JMusik.WebApi
             services.AddScoped<IProductosRepository, ProductosRepository>();
             services.AddScoped<IGenericoRepository<Perfil>, PerfilesRepository>();
             services.AddScoped<IOrdersRepository, OrdersRepository>();
-            
+            services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddScoped<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
