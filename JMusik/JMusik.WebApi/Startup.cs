@@ -45,6 +45,9 @@ namespace JMusik.WebApi
             services.AddScoped<IOrdersRepository, OrdersRepository>();
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>();
+            services.AddScoped<IUsersRepository, UsersRepository>();
+
+            services.AddScoped<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

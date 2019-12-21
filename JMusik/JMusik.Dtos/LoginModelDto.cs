@@ -4,12 +4,10 @@ using System.Text;
 
 namespace JMusik.Dtos
 {
-    public class UsuarioListDto
+    public class LoginModelDto
     {
         public int Id { get; set; }
-        public string NombreCompleto { get; set; }
-        public string Email { get; set; }
         public string Username { get; set; }
-        public string Perfil { get; set; }
+        public string Password { get; set; }
     }
 }
