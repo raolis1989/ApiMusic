@@ -18,6 +18,10 @@ using Serilog;
 using Microsoft.Extensions.Logging;
 using JMusik.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using JMusik.WebApi.Services;
 
 namespace JMusik.WebApi
 {
@@ -46,8 +50,49 @@ namespace JMusik.WebApi
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>();
             services.AddScoped<IUsersRepository, UsersRepository>();
-
             services.AddScoped<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>();
+            services.AddSingleton<TokenService>();
+
+
+            var jwtSettings = _configuration.GetSection("JwtSettings");
+            string secretKey = jwtSettings.GetValue<string>("SecretKey");
+            int minutes = jwtSettings.GetValue<int>("MinutesToExpiration");
+            string issuer = jwtSettings.GetValue<string>("Issuer");
+            string audience = jwtSettings.GetValue<string>("Audience");
+
+            var key = Encoding.ASCII.GetBytes(secretKey);
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = true,
+                    ValidIssuer = issuer,
+                    ValidateAudience = true,
+                    ValidAudience = audience,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.FromMinutes(minutes)
+
+
+                };
+            });
+
+            services.AddCors(options=>
+            {
+                options.AddPolicy("CorsPolicy",
+                builder => builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +103,7 @@ namespace JMusik.WebApi
 
             if (env.IsDevelopment())
             {
+
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -66,6 +112,8 @@ namespace JMusik.WebApi
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
+            app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
             app.UseMvc();
 

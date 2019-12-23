@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using JMusik.Data.Contratos;
 using JMusik.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace JMusik.WebApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OrdenesController : ControllerBase

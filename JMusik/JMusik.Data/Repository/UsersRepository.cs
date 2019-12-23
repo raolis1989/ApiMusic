@@ -118,8 +118,6 @@ namespace JMusik.Data.Repository
                                 .SingleOrDefaultAsync(c => c.Id == id && c.Estatus == EstatusUsuario.Activo);
         }
 
-
-
         public async Task<IEnumerable<Usuario>> ObtenerTodosAsync()
         {
             return await _dbSet.Include(usuario => usuario.Perfil)
@@ -140,6 +138,28 @@ namespace JMusik.Data.Repository
                 _logger.LogError($"Error en {nameof(ValidarContrasena)}: " + excepcion.Message);
             }
             return false;
+        }
+
+        public async Task<(bool resultado, Usuario usuario)> ValidarDatosLogin(Usuario datosLoginUsuario)
+        {
+            var usuarioBd = await _dbSet
+                                    .Include(u => u.Perfil)
+                                    .FirstOrDefaultAsync(u => u.Username == datosLoginUsuario.Username);
+
+            if(usuarioBd!=null)
+            {
+                try
+                {
+                    var resultado = _passwordHasher.VerifyHashedPassword(usuarioBd, usuarioBd.Password, datosLoginUsuario.Password);
+                    return (resultado == PasswordVerificationResult.Success ? true : false, usuarioBd);
+                }
+                catch (Exception ex)
+                {
+
+                    _logger.LogError($"Error en {nameof(ValidarDatosLogin)}: {ex.Message}");
+                }          
+            }
+            return (false, null);
         }
     }
 }
