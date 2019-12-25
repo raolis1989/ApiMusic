@@ -1,28 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using JMusik.Data;
+using JMusik.WebApi.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using JMusik.Data;
 using Microsoft.EntityFrameworkCore;
-using JMusik.Data.Contratos;
-using JMusik.Data.Repository;
-using AutoMapper;
-using Serilog.Core;
-using Serilog;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using JMusik.Models;
-using Microsoft.AspNetCore.Identity;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using JMusik.WebApi.Services;
-using JMusik.WebApi.Extensions;
+using Serilog;
 
 namespace JMusik.WebApi
 {
